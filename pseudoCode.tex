@@ -1,0 +1,50 @@
+\begin{algorithm}[h!]
+\caption{Simple pseudocode for two class \Lol~on sample data.}
+\label{alg:LOL.train}
+\begin{algorithmic}[1]
+\Require $X$ a $p \times n$ matrix ($n \ll p$), where columns are observations; rows are
+features.  An $n$ length vector of observation labels, $\mathbf y$.  
+An integer $k$ to specify desired output dimension.
+\Ensure $\mb{A} \in \Real^{p \times k}$
+%
+\Function{\texttt{LOL.train}}{$X$, $Y$, $k$}
+\For{all $j \in J$}
+\State ${n}_j = \sum_{i=1}^n \mb{I}(y_i = j) $ \Comment{sample size per class}
+\State $\mh{\mu}_j = \frac{1}{n_j} \sum_{i=1}^n \mb{x}_i \mb{I}(y_i=j)$ \Comment{class means}
+\EndFor
+\State $\mh{\delta} = \mh{\mu}_1 - \mh{\mu}_2$ \Comment{difference of means}
+\State $\mh{\delta} = \mh{\delta} / \norm{\mh{\delta}}$ \Comment{unit normalize difference of means}
+\For{all $i \in [n]$}
+\State $\mt{x}_i = \mb{x}_i - \mh{\mu}_{y_i}$ \Comment{class centered data}
+\EndFor
+\State $[\mh{u},\mh{d},\mh{v}]=$\texttt{svds}$(\mt{x},k-1)$ \Comment{compute top $k$ singular vectors}
+\State $A=[\mh{\delta}, \mh{u}]$ \Comment{concatenate difference of the means and the top $k$ right singular vectors}
+% \STATE \textbf{Step 0}: From input compute label counts, 
+% $\vec n_{1\times J}$, where $J$ is the
+% number of unique labels. \\
+
+% \STATE \textbf{Step 1}: Compute class-conditional means.
+%   \FOR{$k$ in $[J]$} 
+%   \STATE $\mathbf{\hat \mu}^{j} := \frac{1}{n_j}$ \verb+colsum+ $(X_{\cdot,y_i == j})$ 
+%   \ENDFOR
+% \STATE \textbf{Step 2}: Compute difference in class means: 
+%   \FOR{all pairs $(\mu^i,\mu^j)$ with $i \neq j$.}
+%   \STATE $\mathbf{\hat \delta}^{ij} = \mathbf{\mu}^i - \mathbf{\mu}^j$.
+%   \ENDFOR
+%   \STATE Set $\Delta := [\mathbf{\hat \delta}^{12} \vert \cdots ]$
+
+% \STATE{\textbf{Step 3}: Compute class conditional covariance matrices.
+%   \FOR{$k$ in $[J]$}
+%     \FOR{$\ell$ in $[n]$}
+%     \STATE $\mathbf{\hat \Sigma}_{k\ell} :=  (x_{ik} - \mu_k^j)(x_{il} - \mu_l^j)$
+%     \ENDFOR
+%   \ENDFOR
+%   }
+%   \STATE $\mathbf{\hat\Sigma} :=  \mathbf{\hat \Sigma}_{k\ell}$.
+% \STATE{\textbf{Step 4}: Compute a partial singular value decomposition of $\mathbf{\hat\Sigma}$:}
+% \STATE{$\mathbf{\hat\Sigma} = U_{p \times (k - \abs{U})}\Sigma_{} V^T$}
+
+% \STATE{\textbf{Step 5}: Output $[\Delta \vert U]_{p \times k}$.}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
